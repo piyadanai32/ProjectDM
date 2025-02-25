@@ -2,7 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>พยากรณ์ CPU Performance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พยากรณ์ประสิทธิภาพ CPU</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,6 +17,8 @@
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             display: inline-block;
+            max-width: 400px;
+            width: 100%;
         }
         form {
             display: flex;
@@ -24,19 +27,22 @@
         }
         input {
             margin: 5px;
-            padding: 8px;
-            width: 200px;
+            padding: 10px;
+            width: 100%;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
         button {
             margin-top: 10px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             background-color: #28a745;
             color: white;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
         }
         button:hover {
             background-color: #218838;
@@ -44,6 +50,11 @@
         #result {
             margin-top: 20px;
             font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .error {
+            color: red;
             font-weight: bold;
         }
     </style>
@@ -57,25 +68,28 @@
             })
             .then(response => response.text())
             .then(data => {
-                document.getElementById("result").innerHTML = `<strong>${data}</strong>`;
+                document.getElementById("result").innerHTML = `<strong>📊 ค่าประสิทธิภาพที่คาดการณ์: ${data}</strong>`;
             })
             .catch(error => {
-                document.getElementById("result").innerHTML = `<span style="color:red;">เกิดข้อผิดพลาด: ${error}</span>`;
+                document.getElementById("result").innerHTML = `<span class="error">❌ เกิดข้อผิดพลาด: ${error}</span>`;
             });
         }
     </script>
 </head>
 <body>
-    <h2>พยากรณ์ CPU Performance</h2>
-    <form id="cpuForm" onsubmit="event.preventDefault(); predict();">
-        MYCT: <input type="number" name="MYCT" required><br>
-        MMIN: <input type="number" name="MMIN" required><br>
-        MMAX: <input type="number" name="MMAX" required><br>
-        CACH: <input type="number" name="CACH" required><br>
-        CHMIN: <input type="number" name="CHMIN" required><br>
-        CHMAX: <input type="number" name="CHMAX" required><br>
-        <button type="submit">พยากรณ์</button>
-    </form>
-    <div id="result"></div>
+    <div class="container">
+        <h2>🔎 พยากรณ์ประสิทธิภาพ CPU</h2>
+        <p>กรอกค่าต่าง ๆ ด้านล่างเพื่อทำนายประสิทธิภาพของ CPU</p>
+        <form id="cpuForm" onsubmit="event.preventDefault(); predict();">
+            <input type="number" name="MYCT" placeholder="⏳ ระยะเวลาในการทำงานของคำสั่ง (MYCT)" required>
+            <input type="number" name="MMIN" placeholder="💾 ขนาดหน่วยความจำขั้นต่ำ (MMIN)" required>
+            <input type="number" name="MMAX" placeholder="💽 ขนาดหน่วยความจำสูงสุด (MMAX)" required>
+            <input type="number" name="CACH" placeholder="📂 ขนาดของแคช (CACH)" required>
+            <input type="number" name="CHMIN" placeholder="🔌 ช่องสัญญาณข้อมูลขั้นต่ำ (CHMIN)" required>
+            <input type="number" name="CHMAX" placeholder="⚡ ช่องสัญญาณข้อมูลสูงสุด (CHMAX)" required>
+            <button type="submit">📈 พยากรณ์</button>
+        </form>
+        <div id="result"></div>
+    </div>
 </body>
 </html>
