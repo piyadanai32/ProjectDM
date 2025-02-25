@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>พยากรณ์ CPU Performance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input {
+            margin: 5px;
+            padding: 8px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function predict() {
+            var formData = new FormData(document.getElementById("cpuForm"));
+
+            fetch("predict.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("result").innerHTML = `<strong>${data}</strong>`;
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = `<span style="color:red;">เกิดข้อผิดพลาด: ${error}</span>`;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>พยากรณ์ CPU Performance</h2>
+    <form id="cpuForm" onsubmit="event.preventDefault(); predict();">
+        MYCT: <input type="number" name="MYCT" required><br>
+        MMIN: <input type="number" name="MMIN" required><br>
+        MMAX: <input type="number" name="MMAX" required><br>
+        CACH: <input type="number" name="CACH" required><br>
+        CHMIN: <input type="number" name="CHMIN" required><br>
+        CHMAX: <input type="number" name="CHMAX" required><br>
+        <button type="submit">พยากรณ์</button>
+    </form>
+    <div id="result"></div>
+</body>
+</html>
