@@ -20,9 +20,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $command = escapeshellcmd("java -cp \"C:/Users/User-KK33/OneDrive/Desktop/ProjectDM/libs/weka-3-8-0-monolithic.jar;C:/Users/User-KK33/OneDrive/Desktop/ProjectDM/src\" CPUPerformancePredictor {$data['MYCT']} {$data['MMIN']} {$data['MMAX']} {$data['CACH']} {$data['CHMIN']} {$data['CHMAX']}");
 
     $output = shell_exec($command);
+    $performance = intval($output); // แปลงค่าผลลัพธ์เป็นตัวเลข
+
+    // ตรวจสอบระดับของประสิทธิภาพ
+    if ($performance > 500) {
+        $level = "🔥 ดีมาก";
+    } elseif ($performance >= 300) {
+        $level = "✅ ดี";
+    } elseif ($performance >= 200) {
+        $level = "⚖️ ปานกลาง";
+    } else {
+        $level = "🔴 น้อย";
+    }
 
     if ($output) {
-        echo intval($output);
+        echo "$performance ($level)";
     } else {
         echo "❌ เกิดข้อผิดพลาดระหว่างการรันโมเดล";
     }
